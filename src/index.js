@@ -307,7 +307,6 @@ server.patch("/updateUserNameById/:id", (req, res) => {
   } else {
     usrToUpdate[0].name = req.body.name;
     res.status(201).send("Record Updated! 🤙");
-    console.log(usrToUpdate);
   }
 });
 
