@@ -244,6 +244,7 @@ server.get("/", (req, res) => {
 
 //CRUD OPERATIONS
 
+//Read
 /**
  * The endpoint /getUsers returns a JSON containing all the users
  */
@@ -272,7 +273,6 @@ server.get("/getUserByName/:name", (req, res) => {
 });
 
 //Create
-
 /**
  * This endpoint adds a user to the collection
  * The user object is sent to the server in the body of the request
@@ -286,6 +286,39 @@ server.post("/addUser", (req, res) => {
   users.push(req.body);
   res.status(201).json({
     response: "New user added! 🤙 ",
+  });
+});
+
+//Update
+/**
+ * This endpoint patches the record selected by id, by updating the name
+ * The name is passed in the body of the request
+ */
+server.patch("/updateUserNameById/:id", (req, res) => {
+  if (!req.body.hasOwnProperty("name")) {
+    return res.status(400).json({
+      error: "⚠️ Error 400: the name must be specified ⚠️",
+    });
+  }
+  const { id } = req.params;
+  let usrToUpdate = users.filter((item) => item.id == id);
+  if (usrToUpdate.length === 0) {
+    res.status(404).send("No one has that id, sorry 🤷");
+  } else {
+    usrToUpdate[0].name = req.body.name;
+    res.status(201).send("Record Updated! 🤙");
+    console.log(usrToUpdate);
+  }
+});
+
+//Delete
+/**
+ * This endpoint deletes a user from the collection by specifying its id
+ */
+server.delete("/removeUserById/:id", (req, res) => {
+  const { id } = req.params;
+  res.status(204).json({
+    "deleted user": users.filter((item) => item.id == id),
   });
 });
 
