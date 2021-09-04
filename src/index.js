@@ -3,6 +3,8 @@ const server = express();
 
 const PORT = 5000;
 
+server.use(express.json());
+
 let users = [
   {
     id: 1,
@@ -269,9 +271,14 @@ server.get("/getUserByName/:name", (req, res) => {
   });
 });
 
-//create
-server.get("/addUser", (req, res) => {
-  if (!req.body.hasOwnProterty("id")) {
+//Create
+
+/**
+ * This endpoint adds a user to the collection
+ * The user object is sent to the server in the body of the request
+ */
+server.post("/addUser", (req, res) => {
+  if (!req.body.hasOwnProperty("id")) {
     return res.status(400).json({
       error: "⚠️ Error 400: the user id is a required property ⚠️",
     });
